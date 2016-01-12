@@ -114,10 +114,10 @@ while (($data = fgetcsv($handle, 0, $delimiter)) !== FALSE) {
             addExpressionNote($result['documentID'], $data[$cols['print_copy']], $data[$cols['print_copy_note']], 'Print Copy');
             addExpressionNote($result['documentID'], $data[$cols['scholarly_sharing']], $data[$cols['scholarly_sharing_note']], 'Scholarly Sharing');
             addExpression($result['documentID'], $data[$cols['distance_learning']], 'Distance Learning');
-            addExpression($result['documentID'], $data[$cols['ill_general']], 'Interlibrary Loan');
-            addExpression($result['documentID'], $data[$cols['ill_secure_electronic']], 'Interlibrary Loan');
-            addExpression($result['documentID'], $data[$cols['ill_electronic_email']], 'Interlibrary Loan');
-            addExpressionNote($result['documentID'], $data[$cols['ill_record_keeping']], $data[$cols['ill_record_keeping_note']], 'Interlibrary Loan');
+            addExpression($result['documentID'], "ILL General: " . $data[$cols['ill_general']], 'Interlibrary Loan');
+            addExpression($result['documentID'], "ILL Secure Electronic: " . $data[$cols['ill_secure_electronic']], 'Interlibrary Loan');
+            addExpression($result['documentID'], "ILL Secure Electronic (email): " . $data[$cols['ill_electronic_email']], 'Interlibrary Loan');
+            addExpressionNote($result['documentID'], "ILL Record Keeping: " . $data[$cols['ill_record_keeping']], $data[$cols['ill_record_keeping_note']], 'Interlibrary Loan');
             addExpressionNote($result['documentID'], $data[$cols['course_reserve']], $data[$cols['course_reserve_note']], 'Course Reserve');
             addExpressionNote($result['documentID'], $data[$cols['course_pack_print']] . "\n" . $data[$cols['course_pack_electronic']], $data[$cols['course_pack_note']], 'Course Pack');
             addExpressionNote($result['documentID'], $data[$cols['remote_access']], $data[$cols['remote_access_note']], 'Remote Access');
