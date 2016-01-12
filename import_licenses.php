@@ -121,7 +121,8 @@ while (($data = fgetcsv($handle, 0, $delimiter)) !== FALSE) {
             addExpressionNote($result['documentID'], $data[$cols['course_reserve']], $data[$cols['course_reserve_note']], 'Course Reserve');
             addExpressionNote($result['documentID'], $data[$cols['course_pack_print']] . "\n" . $data[$cols['course_pack_electronic']], $data[$cols['course_pack_note']], 'Course Pack');
             addExpressionNote($result['documentID'], $data[$cols['remote_access']], $data[$cols['remote_access_note']], 'Remote Access');
-            //TODO: Other Use Restrictions
+            addExpressionNote($result['documentID'], 'Other Use Restrictions (Staff Note)', $data[$cols['other_use_restrictions_staff_note']], 'Other use Restrictions (Staff)');
+            addExpressionNote($result['documentID'], 'Other Use Restrictions (Public Note)', $data[$cols['other_use_restrictions_public_note']], 'Other use Restrictions (Public)', 'Display');
             addExpressionNote($result['documentID'], $data[$cols['perpetual_access_right']] . "\n" . $data[$cols['perpetual_access_holdings']], $data[$cols['perpetual_access_note']], 'Perpetual Access');
             addExpressionNote($result['documentID'], $data[$cols['licensee_termination_right']] . "\n" . $data[$cols['licensee_termination_holdings']] . "\n" . $data[$cols['licensee_notice_period_for_termination_number']] . ' ' . $data[$cols['licensee_notice_period_for_termination_unit']], $data[$cols['licensee_termination_condition_note']], 'Licensee Termination');
             addExpressionNote($result['documentID'], $data[$cols['licensor_termination_right']] . "\n" . $data[$cols['licensor_termination_condition']] . "\n" . $data[$cols['licensor_notice_period_for_termination_number']] . ' ' . $data[$cols['licensor_notice_period_for_termination_unit']], $data[$cols['licensor_termination_condition_note']], 'Licensor Termination');
