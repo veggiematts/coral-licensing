@@ -39,6 +39,12 @@ while (($data = fgetcsv($handle, 0, $delimiter)) !== FALSE) {
 
             // Let's search the parent resource
             $parentResourceName = $data[$cols['database_code']];
+
+            if (!$parentResourceName) {
+                echo "Cannot add license: database_code not defined\n";
+                continue;
+            }
+
             /*
             $resources = $resourceObj->getResourceByTitle($parentResourceName);
             $resource = $resources[0];
@@ -48,9 +54,21 @@ while (($data = fgetcsv($handle, 0, $delimiter)) !== FALSE) {
             $query = "SELECT resourceID  FROM $rdbName.Resource WHERE UPPER(titleText) = '" . str_replace("'", "''", strtoupper($parentResourceName)) . "'";
             $result = $l->db->processQuery($query, 'assoc');
 
+            
+            if (!$result['resourceID']) {
+                echo "Cannot add license: parent $parentResourceName not found: $query\n";
+                continue;
+            }
+            echo "result : " . $result['resourceID'] . "\n"; 
             // Getting the first son (by default)
             $query = "SELECT resourceID FROM $rdbName.ResourceRelationship WHERE relatedResourceID = " . $result['resourceID'] . " LIMIT 1";
             $result = $l->db->processQuery($query, 'assoc');
+
+            if (!$result['resourceID']) {
+                echo "Cannot add license: no child resource found for parent resource $parentResourceName : $query\n";
+                continue;
+            }
+
 
             // Getting first son organization
             /*
@@ -60,6 +78,13 @@ while (($data = fgetcsv($handle, 0, $delimiter)) !== FALSE) {
             */
             $query = "SELECT organizationID  FROM $rdbName.ResourceOrganizationLink WHERE ResourceID = " . $result['resourceID'];
             $result = $l->db->processQuery($query, 'assoc');
+
+            if (!$result['organizationID']) {
+                echo "Cannot add license: no organization found for resource " . $result['resourceID'] . " : $query\n";
+                continue;
+            }
+
+            echo "Adding license for $parentResourceName\n";
 
             // Now we can create the license attached to the provider
             $l = new License();
@@ -150,7 +175,7 @@ while (($data = fgetcsv($handle, 0, $delimiter)) !== FALSE) {
 
 function addExpression($documentID, $documentText, $et_shortName, $noteType = null) {
     if (!$documentText) { 
-        echo "Warning ! No text for expression $et_shortname";
+        echo "Warning ! No text for expression $et_shortname\n";
         return;
     }
     $e = new Expression();
